@@ -98,13 +98,25 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-#map {
-   height:460px;
-   width: 680px;
+.map {
+
+   height: 800px;
    border-style: solid;
    border-width: 1px;
 }
 
+.state-icon {
+   left: -5px;
+}
+.list-group-item-primary {
+   color: rgb(255, 255, 255);
+   background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+   margin-bottom: 0px;
+}
 
 
 

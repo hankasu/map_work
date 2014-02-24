@@ -1,0 +1,67 @@
+app = (function(){
+
+   var initModule,
+       initMap,
+       geoMap,
+       url = 'https://a.tiles.mapbox.com/v3/hankasu.h4307hg3/{z}/{x}/{y}.png',
+       mapDataUrl = 'http://www.fodors.com/maps/geojson.cfm?entity_id=474684&dest=1128&class_id=20001',
+       togglePOI,
+       $poiButton,
+       markerLyrGroup,
+       hasPOIs = false;
+
+   initMap = function( container ){
+
+      geoMap = L.map(container, {
+         center : [40.712, -74.007],
+         zoom: 15
+      });
+
+      L.tileLayer(url).addTo(geoMap);
+      markerLyrGroup = new L.LayerGroup();
+      markerLyrGroup.addTo(geoMap);
+      return true;
+
+   };
+
+   togglePOI = function( event ){
+      if(hasPOIs === false){
+         $.ajax({
+            url:mapDataUrl,
+            crossDomain:true,
+            dataType:"json",
+            success : function(data){
+               markerLyrGroup.addLayer(
+                   L.geoJson(data, {
+                      onEachFeature: function(feature, layer){
+                         layer.bindPopup(feature.properties.title);
+                      }
+                   }).addTo(geoMap)
+               );
+               $poiButton.html("Clear POI");
+               hasPOIs = true;
+            },
+            error : function(xhr, status, err){
+               console.log(err);
+            }
+
+         });
+      }
+      //clear the map
+      else{
+         markerLyrGroup.clearLayers();
+         $poiButton.html("Add POIs");
+         hasPOIs = false;
+      }
+      //L.geoJson(mapDataUrl).addToMap(geoMap);
+   };
+
+   initModule = function( $container ){
+      $poiButton = $container.find('button');
+      $poiButton.click( togglePOI );
+   };
+   return {
+      initMap : initMap,
+      initModule : initModule
+   };
+}());

@@ -1,67 +1,20 @@
-app = (function(){
+/*
+ * app.js
+ * Root namespace module
+ */
 
-   var initModule,
-       initMap,
-       geoMap,
-       url = 'https://a.tiles.mapbox.com/v3/hankasu.h4307hg3/{z}/{x}/{y}.png',
-       mapDataUrl = 'https://a.tiles.mapbox.com/v3/hankasu.h4307hg3/markers.geojson',
-       togglePOI,
-       $poiButton,
-       markerLyrGroup,
-       hasPOIs = false;
+/*jslint           browser : true,   continue : true,
+ devel  : true,    indent : 2,       maxerr  : 50,
+ newcap : true,     nomen : true,   plusplus : true,
+ regexp : true,    sloppy : true,       vars : false,
+ white  : true
+ */
+/*global $, spa */
 
-   initMap = function( container ){
-
-      geoMap = L.map(container, {
-         center : [40.712, -74.007],
-         zoom: 15
-      });
-
-      L.tileLayer(url).addTo(geoMap);
-      markerLyrGroup = new L.LayerGroup();
-      markerLyrGroup.addTo(geoMap);
-      return true;
-
+var app = (function () {
+   var initModule = function ( $container ) {
+      app.shell.initModule( $container );
    };
 
-   togglePOI = function( event ){
-      if(hasPOIs === false){
-         $.ajax({
-            url:mapDataUrl,
-            crossDomain:true,
-            dataType:"json",
-            success : function(data){
-               markerLyrGroup.addLayer(
-                   L.geoJson(data, {
-                      onEachFeature: function(feature, layer){
-                         layer.bindPopup(feature.properties.description);
-                      }
-                   }).addTo(geoMap)
-               );
-               $poiButton.html("Clear POI");
-               hasPOIs = true;
-            },
-            error : function(xhr, status, err){
-               console.log(err);
-            }
-
-         });
-      }
-      //clear the map
-      else{
-         markerLyrGroup.clearLayers();
-         $poiButton.html("Add POIs");
-         hasPOIs = false;
-      }
-      //L.geoJson(mapDataUrl).addToMap(geoMap);
-   };
-
-   initModule = function( $container ){
-      $poiButton = $container.find('button');
-      $poiButton.click( togglePOI );
-   };
-   return {
-      initMap : initMap,
-      initModule : initModule
-   };
+   return { initModule: initModule };
 }());
