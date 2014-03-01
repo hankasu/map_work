@@ -20,7 +20,7 @@ app.geomap = (function () {
    //---------------- BEGIN MODULE SCOPE VARIABLES --------------
    var
        configMap = {
-          url    : 'https://a.tiles.mapbox.com/v3/hankasu.h4307hg3/{z}/{x}/{y}.png',
+          url    : 'http://a.tiles.mapbox.com/v3/markwstroud.kjjti7so/{z}/{x}/{y}.png',
           center : [40.712, -74.007],
           zoom   : 14
        },
@@ -35,13 +35,13 @@ app.geomap = (function () {
        stateMap  = { $container : null },
        jqueryMap = {},
        mapLayers = {},
+       icons     = {},
        geoMap,
        restaurantsLyr,
        sitesLyr,
        hotelsLyr,
        nightlifeLyr,
        shoppingLyr,
-       hotelIcon,
 
        setJqueryMap, configModule, initModule, togglePois;
    //----------------- END MODULE SCOPE VARIABLES ---------------
@@ -49,6 +49,7 @@ app.geomap = (function () {
    //------------------- BEGIN UTILITY METHODS ------------------
    // example : getTrimmedString
    onEachFeature = function(feature, layer){
+      //TODO create popup html with title and data
       layer.bindPopup(feature.properties.title);
    }
    //-------------------- END UTILITY METHODS -------------------
@@ -92,7 +93,7 @@ app.geomap = (function () {
                markerLyrGroup.addLayer(
                    L.geoJson(data, {
                       pointToLayer : function(feature, latlng){
-                         return L.marker(latlng, {icon: hotelIcon});
+                         return L.marker(latlng, {icon: icons[category]});
                       },
                       onEachFeature: onEachFeature
                    })
@@ -125,12 +126,14 @@ app.geomap = (function () {
       stateMap.$container = $container;
       setJqueryMap();
 
+      //add the layer groups each poi is a layer in leaflet
       restaurantsLyr = L.layerGroup();
       sitesLyr       = L.layerGroup();
       hotelsLyr      = L.layerGroup();
       nightlifeLyr   = L.layerGroup();
       shoppingLyr    = L.layerGroup();
 
+      //set map layers object
       mapLayers = {
          "restaurants" : restaurantsLyr,
          "sites"       : sitesLyr,
@@ -138,6 +141,15 @@ app.geomap = (function () {
          "nightlife"   : nightlifeLyr,
          "shopping"    : shoppingLyr
       }
+
+      //set icons object
+      icons = {
+         "hotels"      : new app.icons.baseIcon({iconUrl:'img/pin-hotels.png'}),
+         "sites"       : new app.icons.baseIcon({iconUrl:'img/pin-sites.png'}),
+         "shopping"    : new app.icons.baseIcon({iconUrl:'img/pin-shopping.png'}),
+         "restaurants" : new app.icons.baseIcon({iconUrl:'img/pin-restaurants_cl.png'}),
+         "nightlife"   : new app.icons.baseIcon({iconUrl:'img/pin-nightlife.png'})
+      };
 
       geoMap = L.map(jqueryMap.$container.attr('id'), {
          center : configMap.center,
@@ -147,8 +159,6 @@ app.geomap = (function () {
 
       //add tms layer to map
       L.tileLayer(configMap.url).addTo(geoMap);
-
-      hotelIcon = new app.icons.hotelIcon({iconUrl:'img/hotel.png'});
 
       //add category layers
       return true;

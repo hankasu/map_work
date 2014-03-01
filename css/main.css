@@ -117,6 +117,9 @@ textarea {
 .well .list-group {
    margin-bottom: 0px;
 }
+.leaflet-popup-content {
+   color : #000000;
+}
 
 
 

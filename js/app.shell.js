@@ -39,7 +39,6 @@ app.shell = (function () {
 
    //------------------- BEGIN EVENT HANDLERS -------------------
    onCategoryClick = function(event, dataObj){
-      console.log('Called', dataObj);
       app.geomap.togglePois(dataObj);
    };
    //-------------------- END EVENT HANDLERS --------------------
