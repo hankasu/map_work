@@ -20,7 +20,7 @@ app.geomap = (function () {
    //---------------- BEGIN MODULE SCOPE VARIABLES --------------
    var
        configMap = {
-          url    : 'http://a.tiles.mapbox.com/v3/markwstroud.kjjti7so/{z}/{x}/{y}.png',
+          url    : 'http://a.tiles.mapbox.com/v3/markwstroud.gzaya9yl/{z}/{x}/{y}.png',
           center : [40.712, -74.007],
           zoom   : 14
        },
@@ -50,7 +50,12 @@ app.geomap = (function () {
    // example : getTrimmedString
    onEachFeature = function(feature, layer){
       //TODO create popup html with title and data
-      layer.bindPopup(feature.properties.title);
+      var popupHtml = '<h5>' + feature.properties.title + '</h5>' +
+                      '<p>Price - ' + feature.properties.price + ' ' +
+                      feature.properties.pricesymbol + '</p>' +
+                      '<p>' + feature.properties.desc + '</p>' +
+                      '<a href="' + feature.properties.url + '">Fodors Review</a>'
+      layer.bindPopup(popupHtml);
    }
    //-------------------- END UTILITY METHODS -------------------
 
