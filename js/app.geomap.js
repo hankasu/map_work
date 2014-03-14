@@ -49,7 +49,6 @@ app.geomap = (function () {
    //------------------- BEGIN UTILITY METHODS ------------------
    // example : getTrimmedString
    onEachFeature = function(feature, layer){
-      //TODO create popup html with title and data
       var popupHtml = '<h5>' + feature.properties.title + '</h5>' +
                       '<p>Price - ' + feature.properties.price + ' ' +
                       feature.properties.pricesymbol + '</p>' +
