@@ -20,7 +20,7 @@ app.geomap = (function () {
    //---------------- BEGIN MODULE SCOPE VARIABLES --------------
    var
        configMap = {
-          url    : 'http://a.tiles.mapbox.com/v3/markwstroud.gzaya9yl/{z}/{x}/{y}.png',
+         url: 'https://api.tiles.mapbox.com/v4/markwstroud.c423c181/{z}/{x}/{y}.png',
           center : [40.712, -74.007],
           zoom   : 14
        },
